@@ -1,9 +1,9 @@
 <?php
 /**
  * Plugin Name: Ninja Forms - Clareif
- * Plugin URI: http://URI_Of_Page_Describing_Plugin_and_Updates
+ * Plugin URI: https://github.com/RGunning/ninja-forms_clareif
  * Description: Clareif opt-in/out.
- * Version: 0.0.1
+ * Version: 1.0.0
  * Author: Richard Gunning, rjg70
  * Author URI: http://mcr.clare.cam.ac.uk/author/rjg70
  * License: GPL2
@@ -31,7 +31,7 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 global $clareif_version;
-$clareif_version = '0.0.1';
+$clareif_version = '1.0.0';
 
 function clareif_install () {
 	global $wpdb;
@@ -51,15 +51,18 @@ function clareif_updateform(){
  		
 	//Get the form ID of the form being processed.
   	$form_id = $ninja_forms_processing->get_form_ID();
-
-	//has user already submitted? If so delete old submission
-	$args = array(
-		'form_id'   => $form_id,
-		'user_ID'   => $user_id
-		);
-	$subs = Ninja_Forms()->subs()->get( $args );
-	foreach ( $subs as $sub ) {
-		$sub->delete();
+  	
+  	//Is the submitted form a clareif form?
+	if ($form_id==5) {
+		//Has user already submitted? If so delete old submission
+		$args = array(
+			'form_id'   => $form_id,
+			'user_ID'   => $user_id
+			);
+		$subs = Ninja_Forms()->subs()->get( $args );
+		foreach ( $subs as $sub ) {
+			$sub->delete();
+		}
 	}
 }
 
